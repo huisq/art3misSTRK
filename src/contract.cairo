@@ -28,7 +28,7 @@ pub trait ITarot<TContractState> {
     fn get_token_uri(self: @TContractState, token_id: u256) -> ByteArray;
     fn shuffle_deck(ref self: TContractState, seed: u64);
     fn draw_card(self: @TContractState) -> ByteArray;
-    fn mint(ref self: TContractState, card_index: usize);
+    fn mint(ref self: TContractState, token_uri: u256);
 }
 
 #[starknet::contract]
@@ -150,8 +150,8 @@ pub mod Tarot {
             output
         }
 
-        fn mint(ref self: ContractState, card_index: usize){
-            self.erc721.mint(get_caller_address(), card_index.into());
+        fn mint(ref self: ContractState, token_uri: u256){
+            self.erc721.mint(get_caller_address(), token_uri);
             self.minted.write(self.minted.read() + 1);
         }
     }
